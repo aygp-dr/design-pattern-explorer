@@ -1,0 +1,22 @@
+.PHONY: build run test lint clean help
+
+BINARY := design-pattern-explorer
+
+help: ## Show this help
+	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}'
+
+build: ## Build the binary
+	@mkdir -p bin
+	go build -o bin/$(BINARY) .
+
+run: build ## Build and run
+	./bin/$(BINARY)
+
+test: ## Run tests
+	go test -v ./...
+
+lint: ## Run go vet
+	go vet ./...
+
+clean: ## Clean build artifacts
+	rm -rf bin/
